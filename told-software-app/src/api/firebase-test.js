@@ -1,10 +1,10 @@
 import React from 'react';
 import { StyleSheet, Text, View, Button } from 'react-native';
 import { firestore, auth } from './firebase-api';
+import { registerForPushNotificationsAsync } from './expo-push';
 
 export class FirebaseTest extends React.Component {
   fsTest = "";
-  authTest = "";
 
   pressTestFirestore = () => {
     this.fsTest += 'Test Firestore... ';
@@ -29,6 +29,8 @@ export class FirebaseTest extends React.Component {
     });
 
   };
+
+  authTest = "";
 
   pressTestAuth = () => {
     this.authTest += 'Test Auth... ';
@@ -62,6 +64,17 @@ export class FirebaseTest extends React.Component {
     // });
   };
 
+  expoPushTest = "";
+
+  pressRegisterExpoPushNotification = () => {
+    const user = auth.currentUser;
+    const userKey = user.uid;
+    registerForPushNotificationsAsync(userKey).then((x) => {
+      this.expoPushTest += '' + x;
+      this.setState({});
+    });
+  };
+
   render() {
     return (
       <View>
@@ -70,7 +83,11 @@ export class FirebaseTest extends React.Component {
 
         <Button onPress={this.pressTestAuth} title="Test Auth"></Button>
         <Text>{this.authTest}</Text>
+
+        <Button onPress={this.pressRegisterExpoPushNotification} title="Test Register Expo Push Notification"></Button>
+        <Text>{this.expoPushTest}</Text>
       </View>
     );
   }
 }
+

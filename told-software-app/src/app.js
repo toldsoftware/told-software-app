@@ -4,6 +4,9 @@ import { StackNavigator, NavigationActions } from 'react-navigation';
 import { HomeScreen } from './screens/home';
 import { DemoListScreen, demoScreens } from './screens/demo-list';
 
+// TODO: Handle Notifications in App
+// https://docs.expo.io/versions/latest/guides/push-notifications.html
+
 export const AppComponent = StackNavigator({
   Home: { screen: HomeScreen },
   DemoList: { screen: DemoListScreen },

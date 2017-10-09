@@ -3,7 +3,7 @@ import * as C from '../../functions/config';
 
 const PUSH_ENDPOINT = C.setExpoPushToken_url;
 
-async function registerForPushNotificationsAsync(userKey) {
+export async function registerForPushNotificationsAsync(userKey) {
     const { status: existingStatus } = await Permissions.getAsync(
         Permissions.NOTIFICATIONS
     );
