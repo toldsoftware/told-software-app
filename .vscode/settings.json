@@ -1,5 +1,7 @@
 {
     "files.exclude": {
-        "told-software-app/**/*.js": false
+        "told-software-app/expo/src/**/*.js": true,
+        "told-software-app/firebase/functions/**/*.js": true,
+        "told-software-app/common/**/*.js": true
     }
 }

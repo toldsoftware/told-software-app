@@ -7,7 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 import { Permissions, Notifications } from 'expo';
-import * as C from '../../functions/notifications/config';
+import * as C from './config';
 const PUSH_ENDPOINT = C.setExpoPushToken_url;
 export function registerForPushNotificationsAsync(userKey) {
     return __awaiter(this, void 0, void 0, function* () {

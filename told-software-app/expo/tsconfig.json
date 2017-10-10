@@ -8,8 +8,8 @@
         "jsx": "react-native",
         "allowSyntheticDefaultImports": true
     },
-    "exclude": [
-        "node_modules",
-        "functions"
+    "include": [
+        "src",
+        "../common"
     ]
 }

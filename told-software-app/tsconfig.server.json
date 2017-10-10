@@ -1,0 +1,13 @@
+{
+    "compilerOptions": {
+        "target": "es6",
+        "module": "commonjs",
+        "moduleResolution": "node",
+        "experimentalDecorators": true,
+        "sourceMap": false,
+        "baseUrl": "./firebase/functions/node_modules/"
+    },
+    "exclude": [
+        "**/*.tsx"
+    ]
+}

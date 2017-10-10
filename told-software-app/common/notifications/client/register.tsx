@@ -1,5 +1,5 @@
 import { Permissions, Notifications } from 'expo';
-import * as C from '../../functions/notifications/config';
+import * as C from '../config';
 
 const PUSH_ENDPOINT = C.setExpoPushToken_url;
 

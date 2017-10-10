@@ -5,11 +5,14 @@
         "moduleResolution": "node",
         "experimentalDecorators": true,
         "sourceMap": false,
-        "jsx": "react-native",
-        "typeRoots" : ["./node_modules/@types/"],
-        "baseUrl": "./"
+        "baseUrl": "./node_modules/"
     },
-    "exclude": [
-        "node_modules"
+    "include": [
+        "index.ts",
+        "src",
+        "../../common"
+    ],
+    "exclude":[
+        "**/*.tsx"
     ]
 }

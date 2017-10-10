@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { StyleSheet, Text, View, Button } from 'react-native';
 import { firestore, auth } from './firebase-api';
-import { registerForPushNotificationsAsync } from './expo-push';
+import { registerForPushNotificationsAsync } from '../../../common/notifications/client/register';
 
 export class FirebaseTest extends React.Component {
   fsTest = "";
