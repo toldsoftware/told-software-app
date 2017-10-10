@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "devDependencies": {
+    "@types/fbemitter": "^2.0.32",
     "@types/react": "^16.0.10",
     "@types/react-native": "^0.49.2",
     "@types/react-navigation": "^1.0.21"

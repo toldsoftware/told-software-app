@@ -1,3 +1,5 @@
+// Client Side Keys (Non-Secure => Include in Repo and Client Code)
+
 export const firebaseFunctionsRootUrl = 'https://us-central1-told-software.cloudfunctions.net';
 
 export const firebaseConfig = {

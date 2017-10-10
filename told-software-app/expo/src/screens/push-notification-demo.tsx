@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { StyleSheet, Text, View, Button } from 'react-native';
-import { Permissions, Notifications, MapView } from 'expo';
+import { Permissions, Notifications, MapView, MapCoordinate } from 'expo';
 
 export class PushNotificationDemoScreen extends React.Component {
 
   marker = { latitude: 37.78825, longitude: -122.4324 };
 
-  dragMarker = (c) => {
+  dragMarker = (c: MapCoordinate) => {
     this.marker = c;
     this.setState({});
   };

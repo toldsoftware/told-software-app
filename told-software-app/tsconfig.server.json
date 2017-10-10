@@ -4,10 +4,11 @@
         "module": "commonjs",
         "moduleResolution": "node",
         "experimentalDecorators": true,
+        "noImplicitAny": true,
         "sourceMap": false,
         "baseUrl": "./firebase/functions/node_modules/",
         "paths": {
-            "*": ["@types/*", "*"]
+            "*": ["@types/*", "*", "../typings/*"]
         }
     },
     "exclude": [

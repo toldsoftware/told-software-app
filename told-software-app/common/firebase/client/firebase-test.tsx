@@ -47,7 +47,7 @@ export class FirebaseTest extends React.Component {
 
     // Sign In
     auth.signInWithEmailAndPassword('rick@toldpro.com', '1234567890').then(() => {
-      this.authTest += 'Signed In... ' + auth.currentUser;
+      this.authTest += '\n\nSigned In... ' + JSON.stringify(auth.currentUser);
       this.setState({});
     }).catch((error) => {
       this.authTest += 'Signed In ERROR: ' + error.code + ' - ' + error.message;
@@ -70,7 +70,7 @@ export class FirebaseTest extends React.Component {
     const user = auth.currentUser;
     const userKey = user.uid;
     registerForPushNotificationsAsync(userKey).then((x) => {
-      this.expoPushTest += '' + x;
+      this.expoPushTest += 'DONE';
       this.setState({});
     });
   };

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { StyleSheet, View, Text, Image, TouchableOpacity } from 'react-native';
-import { StackNavigator, NavigationActions } from 'react-navigation';
+import { StackNavigator, NavigationActions, NavigationScreenProp } from 'react-navigation';
 import { HomeScreen } from './screens/home';
 import { DemoListScreen, demoScreens } from './screens/demo-list';
 import { image_toldLogo128 } from './components/assets';
@@ -8,14 +8,14 @@ import { image_toldLogo128 } from './components/assets';
 // TODO: Handle Notifications in App
 // https://docs.expo.io/versions/latest/guides/push-notifications.html
 
-
+type Navigation = NavigationScreenProp<{}, {}>;
 
 export const AppComponent = StackNavigator({
   Home: { screen: HomeScreen },
   DemoList: { screen: DemoListScreen },
   ...demoScreens,
 }, {
-    navigationOptions: (({ navigation }) => ({
+    navigationOptions: (({ navigation }: { navigation: Navigation }) => ({
       // headerTintColor: 'blue',
       headerTitleStyle: styles.headerTitle,
       headerRight: (
@@ -27,7 +27,7 @@ export const AppComponent = StackNavigator({
   }
 );
 
-const goBackHome = (navigation) => {
+const goBackHome = (navigation: Navigation) => {
   navigation.dispatch(NavigationActions.reset({
     index: 0,
     actions: [

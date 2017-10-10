@@ -4,8 +4,12 @@
         "module": "commonjs",
         "moduleResolution": "node",
         "experimentalDecorators": true,
+        "noImplicitAny": true,
         "sourceMap": false,
         "baseUrl": "./node_modules/",
+        "paths": {
+            "*": ["@types/*", "*", "../typings/*"]
+        },
         "outDir": "./build/"
     },
     "include": [

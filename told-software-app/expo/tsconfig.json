@@ -4,10 +4,14 @@
         "module": "es6",
         "moduleResolution": "node",
         "experimentalDecorators": true,
+        "noImplicitAny": true,
         "sourceMap": false,
         "jsx": "react-native",
         "allowSyntheticDefaultImports": true,
         "baseUrl": "./node_modules/",
+        "paths": {
+            "*": ["@types/*", "*", "../typings/*"]
+        },
         "outDir": "./build/"
     },
     "include": [

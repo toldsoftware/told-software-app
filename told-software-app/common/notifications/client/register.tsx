@@ -3,10 +3,11 @@ import * as C from '../config';
 
 const PUSH_ENDPOINT = C.setExpoPushToken_url;
 
-export async function registerForPushNotificationsAsync(userKey) {
+export async function registerForPushNotificationsAsync(userKey: string) {
     const { status: existingStatus } = await Permissions.getAsync(
         Permissions.NOTIFICATIONS
     );
+
     let finalStatus = existingStatus;
 
     // only ask if permissions have not already been determined, because
@@ -24,7 +25,12 @@ export async function registerForPushNotificationsAsync(userKey) {
     }
 
     // Get the token that uniquely identifies this device
-    let token = await Notifications.getExpoPushTokenAsync();
+    const token = await Notifications.getExpoPushTokenAsync();
+
+    const data: C.SetExpoPushToken_RequestBody = {
+        userKey,
+        expoPushToken: token
+    };
 
     // POST the token to your backend server from where you can retrieve it to send push notifications.
     return fetch(PUSH_ENDPOINT, {
@@ -33,13 +39,6 @@ export async function registerForPushNotificationsAsync(userKey) {
             Accept: 'application/json',
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-            token: {
-                value: token,
-            },
-            user: {
-                userKey
-            }
-        }),
+        body: JSON.stringify(data),
     });
 }
