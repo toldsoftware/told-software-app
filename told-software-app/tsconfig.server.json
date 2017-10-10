@@ -5,7 +5,10 @@
         "moduleResolution": "node",
         "experimentalDecorators": true,
         "sourceMap": false,
-        "baseUrl": "./firebase/functions/node_modules/"
+        "baseUrl": "./firebase/functions/node_modules/",
+        "paths": {
+            "*": ["@types/*", "*"]
+        }
     },
     "exclude": [
         "**/*.tsx"

@@ -1,7 +1,7 @@
-import {rootUrl} from '../config';
+import {firebaseFunctionsRootUrl} from '../config';
 
 export const setExpoPushToken_name = 'setExpoPushToken';
-export const setExpoPushToken_url = rootUrl + '/' + setExpoPushToken_name;
+export const setExpoPushToken_url = firebaseFunctionsRootUrl + '/' + setExpoPushToken_name;
 
 export interface UserExpoPushToken {
     userKey: string;

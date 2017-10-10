@@ -6,7 +6,10 @@
         "experimentalDecorators": true,
         "sourceMap": false,
         "jsx": "react-native",
-        "allowSyntheticDefaultImports": true,
-        "baseUrl": "./expo/node_modules/"
+        // "allowSyntheticDefaultImports": true,
+        "baseUrl": "./expo/node_modules/",
+        "paths": {
+            "*": ["@types/*", "*"]
+        }
     }
 }
