@@ -6,9 +6,7 @@
         "experimentalDecorators": true,
         "sourceMap": false,
         "jsx": "react-native",
-        "allowSyntheticDefaultImports": true,
-        "typeRoots" : ["./node_modules/@types/"],
-        "baseUrl": "./"
+        "allowSyntheticDefaultImports": true
     },
     "exclude": [
         "node_modules",
