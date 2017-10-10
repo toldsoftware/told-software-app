@@ -1,9 +1,7 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const firebase = require("firebase");
+import * as firebase from 'firebase';
 // Required for Side Effects
-require("firebase/firestore");
-require("firebase/auth");
+import 'firebase/firestore';
+import 'firebase/auth';
 const app = firebase.initializeApp({
     apiKey: "AIzaSyCT0PWUqJt69BbuUkBieW7z3o-T5zj4qJY",
     authDomain: "told-software.firebaseapp.com",
@@ -12,5 +10,5 @@ const app = firebase.initializeApp({
     storageBucket: "told-software.appspot.com",
     messagingSenderId: "972786940927"
 });
-exports.firestore = firebase.firestore(app);
-exports.auth = firebase.auth(app);
+export const firestore = firebase.firestore(app);
+export const auth = firebase.auth(app);

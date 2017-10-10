@@ -1,3 +1,1 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.image_rick = require('../../img/rick.jpg');
+export const image_rick = require('../../img/rick.jpg');

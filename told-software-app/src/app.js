@@ -1,38 +1,58 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const React = require("react");
-const react_native_1 = require("react-native");
-const react_navigation_1 = require("react-navigation");
-const home_1 = require("./screens/home");
-const demo_list_1 = require("./screens/demo-list");
-// TODO: Handle Notifications in App
-// https://docs.expo.io/versions/latest/guides/push-notifications.html
-exports.AppComponent = react_navigation_1.StackNavigator(Object.assign({ Home: { screen: home_1.HomeScreen }, DemoList: { screen: demo_list_1.DemoListScreen } }, demo_list_1.demoScreens), {
-    navigationOptions: (({ navigation }) => ({
-        // headerTintColor: 'blue',
-        headerTitleStyle: styles.headerTitle,
-        headerRight: (<react_native_1.TouchableOpacity onPress={() => goBackHome(navigation)}>
-          <react_native_1.Image source={require('../img/told-logo-128.png')} style={styles.image}/>
-        </react_native_1.TouchableOpacity>)
-    }))
-});
-const goBackHome = (navigation) => {
-    navigation.dispatch(react_navigation_1.NavigationActions.reset({
-        index: 0,
-        actions: [
-            react_navigation_1.NavigationActions.navigate({ routeName: 'Home' })
-        ]
-    }));
-    // while (navigation.state.params.name != 'Home') {
-    //   navigation.goBack();
-    // }
-};
-const styles = react_native_1.StyleSheet.create({
-    headerTitle: {
-        fontSize: 18,
-    },
-    image: {
-        width: 32,
-        height: 32
+import React from 'react';
+import { View, Text } from 'react-native';
+export class AppComponent extends React.Component {
+    render() {
+        return (<View>
+        <Text>Hello TEST!</Text>
+      </View>);
     }
-});
+}
+// import * as React from 'react';
+// import { StyleSheet, View, Text, Image, TouchableOpacity } from 'react-native';
+// import { StackNavigator, NavigationActions } from 'react-navigation';
+// import { HomeScreen } from './screens/home';
+// import { DemoListScreen, demoScreens } from './screens/demo-list';
+// 
+// // TODO: Handle Notifications in App
+// // https://docs.expo.io/versions/latest/guides/push-notifications.html
+// 
+// 
+// 
+// export const AppComponent = StackNavigator({
+//   Home: { screen: HomeScreen },
+//   DemoList: { screen: DemoListScreen },
+//   ...demoScreens,
+// }, {
+//     navigationOptions: (({ navigation }) => ({
+//       // headerTintColor: 'blue',
+//       headerTitleStyle: styles.headerTitle,
+//       headerRight: (
+//         <TouchableOpacity onPress={() => goBackHome(navigation)} >
+//           <Image source={require('../img/told-logo-128.png')} style={styles.image} />
+//         </TouchableOpacity>
+//       )
+//     })) as any
+//   }
+// );
+//
+// const goBackHome = (navigation) => {
+//   navigation.dispatch(NavigationActions.reset({
+//     index: 0,
+//     actions: [
+//       NavigationActions.navigate({ routeName: 'Home' })
+//     ]
+//   }));
+//   // while (navigation.state.params.name != 'Home') {
+//   //   navigation.goBack();
+//   // }
+// };
+//
+// const styles = StyleSheet.create({
+//   headerTitle: {
+//     fontSize: 18,
+//   },
+//   image: {
+//     width: 32,
+//     height: 32
+//   }
+// });

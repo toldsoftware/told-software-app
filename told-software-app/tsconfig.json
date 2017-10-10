@@ -1,11 +1,12 @@
 {
     "compilerOptions": {
         "target": "es6",
-        "module": "commonjs",
+        "module": "es6",
         "moduleResolution": "node",
         "experimentalDecorators": true,
         "sourceMap": false,
         "jsx": "react-native",
+        "allowSyntheticDefaultImports": true,
         "typeRoots" : ["./node_modules/@types/"],
         "baseUrl": "./"
     },

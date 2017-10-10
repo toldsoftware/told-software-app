@@ -1,9 +1,7 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const React = require("react");
-const react_native_1 = require("react-native");
-const expo_1 = require("expo");
-class PushNotificationDemoScreen extends React.Component {
+import * as React from 'react';
+import { StyleSheet, Text, View } from 'react-native';
+import { MapView } from 'expo';
+export class PushNotificationDemoScreen extends React.Component {
     constructor() {
         super(...arguments);
         this.marker = { latitude: 37.78825, longitude: -122.4324 };
@@ -13,19 +11,18 @@ class PushNotificationDemoScreen extends React.Component {
         };
     }
     render() {
-        return (<expo_1.MapView style={{ flex: 1 }} initialRegion={Object.assign({}, this.marker, { latitudeDelta: 0.0922, longitudeDelta: 0.0421 })}>
-        <react_native_1.View style={styles.container}>
-          <react_native_1.Text>{'Lat: ' + this.marker.latitude}</react_native_1.Text>
-          <react_native_1.Text>{'Long: ' + this.marker.longitude}</react_native_1.Text>
-          <react_native_1.Text>Hold and Drag the pin to move it.</react_native_1.Text>
-        </react_native_1.View>
+        return (<MapView style={{ flex: 1 }} initialRegion={Object.assign({}, this.marker, { latitudeDelta: 0.0922, longitudeDelta: 0.0421 })}>
+        <View style={styles.container}>
+          <Text>{'Lat: ' + this.marker.latitude}</Text>
+          <Text>{'Long: ' + this.marker.longitude}</Text>
+          <Text>Hold and Drag the pin to move it.</Text>
+        </View>
 
-        <expo_1.MapView.Marker draggable coordinate={this.marker} onDragEnd={(e) => this.dragMarker(e.nativeEvent.coordinate)}/>
-      </expo_1.MapView>);
+        <MapView.Marker draggable coordinate={this.marker} onDragEnd={(e) => this.dragMarker(e.nativeEvent.coordinate)}/>
+      </MapView>);
     }
 }
-exports.PushNotificationDemoScreen = PushNotificationDemoScreen;
-const styles = react_native_1.StyleSheet.create({
+const styles = StyleSheet.create({
     container: {
         height: 90,
         backgroundColor: '#fff',
