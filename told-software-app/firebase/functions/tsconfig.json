@@ -5,14 +5,11 @@
         "moduleResolution": "node",
         "experimentalDecorators": true,
         "sourceMap": false,
-        "baseUrl": "./node_modules/"
+        "baseUrl": "./node_modules/",
+        "outDir": "./build/"
     },
     "include": [
-        "index.ts",
         "src",
-        "../../common"
-    ],
-    "exclude":[
-        "**/*.tsx"
+        "../../common/**/*.ts"
     ]
 }

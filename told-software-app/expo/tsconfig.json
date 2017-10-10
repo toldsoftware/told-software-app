@@ -6,10 +6,13 @@
         "experimentalDecorators": true,
         "sourceMap": false,
         "jsx": "react-native",
-        "allowSyntheticDefaultImports": true
+        "allowSyntheticDefaultImports": true,
+        "baseUrl": "./node_modules/",
+        "outDir": "./build/"
     },
     "include": [
         "src",
-        "../common"
+        "../common/**/client",
+        "../common/**/config.ts"
     ]
 }
