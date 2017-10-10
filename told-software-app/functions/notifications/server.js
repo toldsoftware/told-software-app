@@ -7,16 +7,20 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+function __export(m) {
+    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
+}
 Object.defineProperty(exports, "__esModule", { value: true });
 const functions = require("firebase-functions");
-const firebase_api_1 = require("./firebase-api");
+const server_1 = require("../firebase/server");
 const Expo = require("expo-server-sdk");
+__export(require("./config"));
 // https://docs.expo.io/versions/latest/guides/push-notifications.html
 // Set User's Expo Push Token
 exports.setExpoPushToken = functions.https.onRequest((request, response) => {
     const data = request.body;
-    const d = { userKey: data.user.userKey, expoPushToken: data.token.value };
-    firebase_api_1.firestore.collection('expo-push-tokens').add(d);
+    const d = data;
+    server_1.firestore.collection('expo-push-tokens').add(d);
     response.send(true);
 });
 // Send Push Notification
@@ -34,7 +38,7 @@ exports.testGetPushToken = functions.https.onRequest((request, response) => __aw
 const getPushToken = (to) => __awaiter(this, void 0, void 0, function* () {
     let pushToken = to.pushToken;
     if (!pushToken) {
-        const result = yield firebase_api_1.firestore.collection('expo-push-tokens').where('userKey', '==', to.userKey).get();
+        const result = yield server_1.firestore.collection('expo-push-tokens').where('userKey', '==', to.userKey).get();
         result.forEach(doc => pushToken = doc.data().expoPushToken);
     }
     if (!pushToken) {

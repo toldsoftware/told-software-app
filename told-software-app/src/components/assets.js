@@ -1,3 +1,3 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.rootUrl = 'https://us-central1-told-software.cloudfunctions.net';
+exports.image_rick = require('../../img/rick.jpg');

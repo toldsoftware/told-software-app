@@ -1,20 +1,16 @@
 import * as functions from 'firebase-functions';
-import { firestore } from './firebase-api';
-import { SetExpoPushToken_RequestBody } from "./config";
-
+import { firestore } from '../firebase/server';
 import * as Expo from 'expo-server-sdk';
 
-interface UserExpoPushToken {
-    userKey: string;
-    expoPushToken: string;
-}
+import { SetExpoPushToken_RequestBody, UserExpoPushToken } from "./config";
+export * from './config';
 
 // https://docs.expo.io/versions/latest/guides/push-notifications.html
 
 // Set User's Expo Push Token
 export const setExpoPushToken = functions.https.onRequest((request, response) => {
     const data = request.body as SetExpoPushToken_RequestBody;
-    const d: UserExpoPushToken = { userKey: data.user.userKey, expoPushToken: data.token.value };
+    const d: UserExpoPushToken = data;
     firestore.collection('expo-push-tokens').add(d);
     response.send(true);
 });

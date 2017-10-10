@@ -1,6 +1,5 @@
-import * as expoPushNotification from './expo-push-notification';
-import * as C from './config';
+import * as notifications from './notifications/server';
 
-exports[C.setExpoPushToken_name] = expoPushNotification.setExpoPushToken;
-exports['testSendPushNotification'] = expoPushNotification.testSendPushNotification;
-exports['testGetPushToken'] = expoPushNotification.testGetPushToken;
+exports[notifications.setExpoPushToken_name] = notifications.setExpoPushToken;
+exports['testSendPushNotification'] = notifications.testSendPushNotification;
+exports['testGetPushToken'] = notifications.testGetPushToken;
