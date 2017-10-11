@@ -19,7 +19,7 @@ export class HomeScreen extends ComponentBase {
         <Text style={styles.pargraph}>We solve your stresss, so you can serve your customers.</Text>
         <Text style={styles.pargraph}>This app demonstrates some of the components that we can build for you.</Text>
         <Text style={styles.pargraph}>Also, if you have any questions you can chat with me directly using this app.</Text>
-        {/* <Button title="Chat with Rick Love" onPress={() => navigate('Chat')} /> */}
+        <Button title="Chat with Rick Love" onPress={() => navigate('Chat')} />
         <Button title="Open Demo List" onPress={() => navigate('DemoList')} />
       </View>
     );

@@ -2,7 +2,7 @@ import * as React from 'react';
 import { StyleSheet, Text, View, Button } from 'react-native';
 import * as T from '../types';
 
-export class ConversationView extends React.Component<{ conversation: T.ChatConversation, userAuthor: T.ChatAuthor, onEnterMessage: (content: T.ChatMessageContent) => void }> {
+export class ConversationView extends React.Component<{ conversation: T.ChatConversation, userAuthor: T.ChatAuthor, onUserCreateMessage: (content: T.ChatMessageContent) => void }> {
     render() {
         return (
             <View>

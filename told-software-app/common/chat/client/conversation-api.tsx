@@ -20,6 +20,7 @@ export class ConversationApi {
     }
 
     private async getConversation_orMoreMessages(conversation: T.ChatConversation): Promise<T.ChatConversation> {
+        if (!conversation) { return null; }
 
         const oldMessages = conversation.messages || [];
         const newMessages = await this.getMessages(conversation.conversationId, 10, oldMessages.length && oldMessages[oldMessages.length - 1]);
@@ -137,13 +138,38 @@ export class ConversationApi {
         firestore.collection(T.CONVERSATIONS_COLLECTION).add(data);;
     }
 
-
     // Create Author
-    async createAuthor_inner(authorName: string, authorImage: string) {
+    async getOrCreateAuthor(userId: string, displayName: string, photoUrl: string) {
+        let oldAuthor = await this.getAuthor(userId);
+
+        if (!oldAuthor) {
+            await this.createAuthor_inner(userId, displayName, photoUrl);
+            oldAuthor = await this.getAuthor(userId);
+        }
+
+        return oldAuthor;
+    }
+
+    private async getAuthor(userId: string): Promise<T.ChatAuthor_Data> {
+        const snaptshot = await firestore.collection(T.AUTHORS_COLLECTION)
+            .where(T.USER_ID, '==', userId)
+            .get();
+
+        const data = snaptshot.docs.map(x => {
+            const d = x.data() as T.ChatAuthor_Data;
+            d.authorId = x.id;
+            return d;
+        });
+
+        return data[0];
+    }
+
+    private async createAuthor_inner(userId: string, displayName: string, photoUrl: string) {
         const data: T.ChatAuthor_Data = {
             authorId: undefined,
-            name: authorName,
-            image: authorImage,
+            userId,
+            displayName,
+            photoUrl,
         };
 
         firestore.collection(T.AUTHORS_COLLECTION).add(data);;

@@ -2,6 +2,7 @@ import * as React from 'react';
 import { StyleSheet, View, Text, Image, TouchableOpacity } from 'react-native';
 import { StackNavigator, NavigationActions, NavigationScreenProp } from 'react-navigation';
 import { HomeScreen } from './screens/home';
+import { ChatScreen } from './screens/chat';
 import { DemoListScreen, demoScreens } from './screens/demo-list';
 import { image_toldLogo128 } from './components/assets';
 
@@ -12,6 +13,7 @@ type Navigation = NavigationScreenProp<{}, {}>;
 
 export const AppComponent = StackNavigator({
   Home: { screen: HomeScreen },
+  Chat: { screen: ChatScreen },
   DemoList: { screen: DemoListScreen },
   ...demoScreens,
 }, {
