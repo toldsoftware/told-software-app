@@ -19,31 +19,63 @@ export class ConversationTest extends React.Component {
     }
 
     load = async () => {
+        console.log('ConversationTest: Loading...');
+
         this._conversation = conversation;
         if (this._conversation) { return; }
 
+        console.log('ConversationTest: Get Conversation');
         this._conversation = conversation = await api.getConversation_byName('Test Chat');
 
         if (!this._conversation) {
-            await api.createConversation_inner('Test Chat');
+
+            console.log('ConversationTest: Does not Exist - Create Conversation');
+            await api.createConversation('Test Chat');
             this._conversation = conversation = await api.getConversation_byName('Test Chat');
         }
 
+        console.log('ConversationTest: Get Current User Id');
         let userId = auth.currentUser.uid;
 
         if (!userId) {
+            console.log('ConversationTest: Login User');
+
             await auth.signInWithEmailAndPassword('rick@toldpro.com', '1234567890');
             userId = auth.currentUser.uid;
         }
+
+        console.log('ConversationTest: Get or Create Author',
+            'userId', userId,
+            'displayName', auth.currentUser.displayName,
+            'photoURL', auth.currentUser.photoURL
+        );
 
         this._userAuthor = userAuthor = await api.getOrCreateAuthor(userId, auth.currentUser.displayName, auth.currentUser.photoURL);
 
         this.setState({});
     };
 
+    sendMessage = async (message: T.ChatMessageContent) => {
+        console.log('ConversationTest: sendMessage START');
+
+        await api.createMessage(this._conversation, this._userAuthor, message);
+        await api.getMoreMessages(this._conversation);
+        this.setState({});
+
+        console.log('ConversationTest: sendMessage END');
+    };
+
     render() {
         return (
-            <ConversationView conversation={this._conversation} userAuthor={this._userAuthor} onUserCreateMessage={() => { console.log('onUserCreateMessage') }} />
+            <View>
+                {!conversation && (
+                    <Text>Loading...</Text>
+                )}
+                {conversation && (
+                    <ConversationView conversation={this._conversation} userAuthor={this._userAuthor}
+                        onUserCreateMessage={(x) => this.sendMessage(x)} />
+                )}
+            </View>
         );
     }
 }

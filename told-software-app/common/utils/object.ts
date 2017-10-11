@@ -69,3 +69,6 @@ export function deepCompare<T>(actual: T, expected: T) {
     return partialDeepCompare(actual, expected) && partialDeepCompare(expected, actual);
 }
 
+export function toKeyOfStringLiteral<T, K extends keyof T>(typedNull: T, key: K): K {
+    return key;
+}
