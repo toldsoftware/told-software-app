@@ -5,6 +5,7 @@
         "moduleResolution": "node",
         "experimentalDecorators": true,
         "noImplicitAny": true,
+        "noImplicitThis": true,
         "sourceMap": false,
         "baseUrl": "./node_modules/",
         "paths": {
