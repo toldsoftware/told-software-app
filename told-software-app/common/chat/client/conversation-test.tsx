@@ -1,9 +1,9 @@
 import * as React from 'react';
-import { StyleSheet, Text, View, Button, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, Button, ScrollView, KeyboardAvoidingView } from 'react-native';
 import * as T from '../types';
 import { ConversationApi } from './conversation-api';
 import { ConversationView } from './conversation-view';
-import { auth, resetFirestore } from '../../firebase/client/firebase-api';
+import { auth } from '../../firebase/client/firebase-api';
 
 const api = new ConversationApi();
 let conversation: T.ChatConversation = null;
@@ -36,14 +36,10 @@ export class ConversationTest extends React.Component {
 
         console.log('ConversationTest: load: Get Current User Id');
 
-        // let user = auth.currentUser;
-
-        // if (!userId) {
-        //     console.log('ConversationTest: load: Login User');
-
-        //     await auth.signInWithEmailAndPassword('rick@toldpro.com', '1234567890');
-        //     userId = auth.currentUser.uid;
-        // }
+        if (!auth.currentUser) {
+            console.log('ConversationTest: load: Login User');
+            await auth.signInAnonymously();
+        }
 
         await this.loadAuthor();
 
@@ -93,8 +89,8 @@ export class ConversationTest extends React.Component {
         console.log('ConversationTest: loginAsRick START');
 
         await auth.signInWithEmailAndPassword('rick@toldpro.com', '1234567890');
-        await resetFirestore();
         await this.loadAuthor();
+        await this.subscribeToConversation();
 
         this.setState({});
         console.log('ConversationTest: loginAsRick END');
@@ -104,8 +100,8 @@ export class ConversationTest extends React.Component {
         console.log('ConversationTest: loginAsAnon START');
 
         await auth.signInAnonymously();
-        await resetFirestore();
         await this.loadAuthor();
+        await this.subscribeToConversation();
 
         this.setState({});
         console.log('ConversationTest: loginAsAnon END');
@@ -129,18 +125,35 @@ export class ConversationTest extends React.Component {
             'authorId', this._userAuthor && this._userAuthor.id);
 
         return (
-            <ScrollView>
-                {!conversation && (
-                    <Text>Loading...</Text>
-                )}
-                {conversation && (
-                    <ConversationView conversation={this._conversation} userAuthor={this._userAuthor}
-                        onUserCreateMessage={(x) => this.sendMessage(x)} />
-                )}
-                <Button title='As Rick' onPress={this.loginAsRick} />
-                <Button title='As Anon' onPress={this.loginAsAnon} />
-                <Button title='Sign Out' onPress={this.signOut} />
-            </ScrollView>
+            <View style={styles.container} ref='view'>
+                <KeyboardAvoidingView style={styles.keyboardAvoidingView} behavior={'padding'} keyboardVerticalOffset={64}>
+                    <View style={styles.actionContainer}>
+                        <Button title='As Rick' onPress={this.loginAsRick} />
+                        <Button title='As Anon' onPress={this.loginAsAnon} />
+                        <Button title='Sign Out' onPress={this.signOut} />
+                    </View>
+                    {!conversation && (
+                        <Text>Loading...</Text>
+                    )}
+                    {conversation && (
+                        <ConversationView conversation={this._conversation} userAuthor={this._userAuthor}
+                            onUserCreateMessage={(x) => this.sendMessage(x)} />
+                    )}
+                </KeyboardAvoidingView>
+            </View>
         );
     }
 }
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+    },
+    keyboardAvoidingView: {
+        flex: 1,
+    },
+    actionContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+    },
+});

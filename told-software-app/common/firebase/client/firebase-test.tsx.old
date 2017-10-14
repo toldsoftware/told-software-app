@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { StyleSheet, Text, View, Button } from 'react-native';
-import { firestore, auth } from './firebase-api';
+import { app } from './firebase-api';
 import { registerForPushNotificationsAsync } from '../../../common/notifications/client/register';
 
 export class FirebaseTest extends React.Component {
@@ -11,7 +11,7 @@ export class FirebaseTest extends React.Component {
     this.setState({});
 
     // Add Collection
-    const c = firestore.collection("collection-a");
+    const c = app.firestore.collection("collection-a");
 
     // Add Doc
     c.add({
@@ -37,7 +37,7 @@ export class FirebaseTest extends React.Component {
     this.setState({});
 
     // Create User
-    auth.createUserWithEmailAndPassword('rick@toldpro.com', '1234567890').then(() => {
+    app.auth.createUserWithEmailAndPassword('rick@toldpro.com', '1234567890').then(() => {
       this.authTest += 'Created User... ';
       this.setState({});
     }).catch((error) => {
@@ -46,8 +46,8 @@ export class FirebaseTest extends React.Component {
     });
 
     // Sign In
-    auth.signInWithEmailAndPassword('rick@toldpro.com', '1234567890').then(() => {
-      this.authTest += '\n\nSigned In... ' + JSON.stringify(auth.currentUser);
+    app.auth.signInWithEmailAndPassword('rick@toldpro.com', '1234567890').then(() => {
+      this.authTest += '\n\nSigned In... ' + JSON.stringify(app.auth.currentUser);
       this.setState({});
     }).catch((error) => {
       this.authTest += 'Signed In ERROR: ' + error.code + ' - ' + error.message;
@@ -67,7 +67,7 @@ export class FirebaseTest extends React.Component {
   expoPushTest = "";
 
   pressRegisterExpoPushNotification = () => {
-    const user = auth.currentUser;
+    const user = app.auth.currentUser;
     const userKey = user.uid;
     registerForPushNotificationsAsync(userKey).then((x) => {
       this.expoPushTest += 'DONE';

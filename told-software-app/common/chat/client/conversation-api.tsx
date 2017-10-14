@@ -1,9 +1,7 @@
-import { FirestoreAccess } from '../../firebase/client/firebase-api';
+import { firestore } from '../../firebase/client/firebase-api';
 import * as T from '../types';
 import * as O from '../../utils/observable';
 import { toUniqueValues, toLookup, toUniqueItems } from '../../utils/object';
-
-const fs = new FirestoreAccess();
 
 export class ConversationApi {
 
@@ -87,33 +85,33 @@ export class ConversationApi {
     }
 
     private async getConversationData_byName(conversationName: string): Promise<T.ChatConversation_DataWithId> {
-        return fs.getDocumentByValue<T.ChatConversation_DataWithId>(T.CONVERSATIONS_COLLECTION, T.CONVERSATION_NAME, conversationName);
+        return firestore.getDocumentByValue<T.ChatConversation_DataWithId>(T.CONVERSATIONS_COLLECTION, T.CONVERSATION_NAME, conversationName);
     }
 
     private async getConversationData_byId(conversationId: string) {
-        return fs.getDocument<T.ChatConversation_DataWithId>(T.CONVERSATIONS_COLLECTION, conversationId);
+        return firestore.getDocument<T.ChatConversation_DataWithId>(T.CONVERSATIONS_COLLECTION, conversationId);
     }
 
     private async getMessages_before(conversationId: string, startBefore: T.ChatMessage = null, limit = 10): Promise<T.ChatMessage_DataWithId[]> {
-        return fs.getDocumentsByValue_paged<T.ChatMessage_DataWithId>(T.MESSAGES_COLLECTION, T.CONVERSATION_ID, conversationId, T.TIMESTAMP, 'desc', startBefore && startBefore.timestamp, limit);
+        return firestore.getDocumentsByValue_paged<T.ChatMessage_DataWithId>(T.MESSAGES_COLLECTION, T.CONVERSATION_ID, conversationId, T.TIMESTAMP, 'desc', startBefore && startBefore.timestamp, limit);
     }
 
     private async getMessages_after(conversationId: string, startAfter: T.ChatMessage): Promise<T.ChatMessage_DataWithId[]> {
         // Get all messages after (should be a small number)
         const limit = 100;
-        const messages = await fs.getDocumentsByValue_paged<T.ChatMessage_DataWithId>(T.MESSAGES_COLLECTION, T.CONVERSATION_ID, conversationId, T.TIMESTAMP, 'asc', startAfter.timestamp, limit);
+        const messages = await firestore.getDocumentsByValue_paged<T.ChatMessage_DataWithId>(T.MESSAGES_COLLECTION, T.CONVERSATION_ID, conversationId, T.TIMESTAMP, 'asc', startAfter.timestamp, limit);
         return messages.reverse();
     }
 
     private async getAuthors(authorIds: string[]): Promise<T.ChatAuthor_DataWithId[]> {
-        return fs.getDocuments<T.ChatAuthor_DataWithId>(T.AUTHORS_COLLECTION, authorIds);
+        return firestore.getDocuments<T.ChatAuthor_DataWithId>(T.AUTHORS_COLLECTION, authorIds);
     }
 
     // Subscribe
     subscribeToConversation(conversation: T.ChatConversation): O.SlimObservable<T.ChatConversation> {
         let c = conversation;
 
-        const o = fs.subscribe<T.ChatMessage_DataWithId>(
+        const o = firestore.subscribe<T.ChatMessage_DataWithId>(
             T.MESSAGES_COLLECTION, T.CONVERSATION_ID, c.id,
             T.TIMESTAMP, 'asc', c.messages[0] && c.messages[0].timestamp);
 
@@ -131,12 +129,12 @@ export class ConversationApi {
 
     // List Conversations
     async getConversationList(): Promise<T.ChatConversation_DataWithId[]> {
-        return fs.getDocuments_all<T.ChatConversation_DataWithId>(T.CONVERSATIONS_COLLECTION);
+        return firestore.getDocuments_all<T.ChatConversation_DataWithId>(T.CONVERSATIONS_COLLECTION);
     }
 
     // Create Conversation
     async createConversation(conversationName: string) {
-        await fs.createDocument<T.ChatConversation_Data>(T.CONVERSATIONS_COLLECTION, {
+        await firestore.createDocument<T.ChatConversation_Data>(T.CONVERSATIONS_COLLECTION, {
             name: conversationName
         });
     }
@@ -168,11 +166,11 @@ export class ConversationApi {
     }
 
     private async getAuthorByUserId(userId: string): Promise<T.ChatAuthor> {
-        return fs.getDocumentByValue<T.ChatAuthor>(T.AUTHORS_COLLECTION, T.USER_ID, userId);
+        return firestore.getDocumentByValue<T.ChatAuthor>(T.AUTHORS_COLLECTION, T.USER_ID, userId);
     }
 
     private async createAuthor(userId: string, displayName: string, photoUrl: string) {
-        await fs.createDocument<T.ChatAuthor_Data>(T.AUTHORS_COLLECTION, {
+        await firestore.createDocument<T.ChatAuthor_Data>(T.AUTHORS_COLLECTION, {
             userId,
             displayName,
             photoUrl,
@@ -191,7 +189,7 @@ export class ConversationApi {
             'content', content,
         );
 
-        await fs.createDocument<T.ChatMessage_Data>(T.MESSAGES_COLLECTION, {
+        await firestore.createDocument<T.ChatMessage_Data>(T.MESSAGES_COLLECTION, {
             conversationId,
             authorId,
             content,

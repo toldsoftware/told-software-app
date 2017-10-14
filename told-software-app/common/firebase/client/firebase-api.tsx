@@ -7,16 +7,68 @@ import * as C from '../../config';
 import { delay } from '../../utils/async';
 import * as O from '../../utils/observable';
 
-const app = firebase.initializeApp(C.firebaseConfig);
+declare var global: any;
 
-firebase.firestore.setLogLevel('debug');
+class FakeImage {
+    static ensureImageExists() {
+        if (!global.Image) {
+            global.Image = FakeImage;
+        }
+    }
 
-export const firestore = firebase.firestore(app);
-export const auth = firebase.auth(app);
+    _isLoaded = false;
+    _callbacks: (() => void)[] = [];
 
-export async function resetFirestore() {
-    // firestore.
-    await delay(1000);
+    set src(url: string) {
+        this._isLoaded = false;
+        this.load(url);
+    }
+
+    load = async (url: string) => {
+        await fetch(url);
+        this._callbacks.forEach(x => x());
+        this._isLoaded = true;
+    };
+
+    onload(callback: () => void) {
+        if (this._isLoaded) { callback(); }
+        this._callbacks.push(callback);
+    }
+}
+
+FakeImage.ensureImageExists();
+
+function setup() {
+    const app = firebase.initializeApp(C.firebaseConfig);
+
+    firebase.firestore.setLogLevel('debug');
+    const firestore = firebase.firestore(app);
+    const auth = firebase.auth(app);
+
+    return { app, firestore, auth };
+}
+
+const instance = setup();
+
+async function resetFirebase() {
+    // FakeImage.ensureImageExists();
+
+    // console.log(':::resetFirestore START');
+
+    // console.log(':::resetFirestore Delete Firestore');
+    // try {
+    //     await instance.app.delete();
+    // } catch (err) {
+    //     console.log(':::resetFirestore Delete App ERROR: ain\'t nobody got time for that', err);
+    // }
+
+    // // Recreate app
+    // const newApp = setup();
+    // instance.app = newApp.app;
+    // instance.firestore = newApp.firestore;
+    // instance.auth = newApp.auth;
+
+    // console.log(':::resetFirestore END');
 }
 
 export type FirestoreCollection = firebase.firestore.CollectionReference;
@@ -24,9 +76,9 @@ export type FirestoreDocument = firebase.firestore.DocumentReference;
 
 export type CollectionId = string & { "__type": 'CollectionId' };
 
-export class FirestoreAccess {
+class FirestoreAccess {
     async getDocument<T extends { id: string }>(collection: CollectionId, documentId: string): Promise<T> {
-        const doc = await firestore.collection(collection)
+        const doc = await instance.firestore.collection(collection)
             .doc(documentId)
             .get();
 
@@ -44,7 +96,7 @@ export class FirestoreAccess {
     }
 
     async getDocuments_all<T extends { id: string }>(collection: CollectionId): Promise<T[]> {
-        const snaptshot = await firestore.collection(collection)
+        const snaptshot = await instance.firestore.collection(collection)
             .get();
 
         const data = snaptshot.docs.map(x => {
@@ -61,7 +113,7 @@ export class FirestoreAccess {
         return x && x[0] || null;
     }
     async getDocumentsByValue<T extends { id: string }>(collection: CollectionId, key: keyof T, value: any): Promise<T[]> {
-        const snaptshot = await firestore.collection(collection)
+        const snaptshot = await instance.firestore.collection(collection)
             .where(key, '==', value)
             .get();
 
@@ -82,7 +134,7 @@ export class FirestoreAccess {
             collection, key, value, orderKey, order, startAfterValue, limit
         );
 
-        let query = firestore.collection(collection)
+        let query = instance.firestore.collection(collection)
             .where(key, '==', value)
             .orderBy(orderKey, order);
 
@@ -117,7 +169,7 @@ export class FirestoreAccess {
             collection, key, value, orderKey, order, startAfterValue, limit
         );
 
-        let query = firestore.collection(collection)
+        let query = instance.firestore.collection(collection)
             .where(key, '==', value)
             .orderBy(orderKey, order);
 
@@ -146,6 +198,25 @@ export class FirestoreAccess {
     }
 
     async createDocument<T>(collection: CollectionId, data: T) {
-        await firestore.collection(collection).add(data);
+        await instance.firestore.collection(collection).add(data);
     }
 }
+
+class AuthAccess {
+    get currentUser() { return instance.auth.currentUser; }
+    async signOut() {
+        await resetFirebase();
+        // return instance.auth.signOut();
+    }
+    async signInAnonymously() {
+        await resetFirebase();
+        return instance.auth.signInAnonymously();
+    }
+    async signInWithEmailAndPassword(email: string, password: string) {
+        await resetFirebase();
+        return instance.auth.signInWithEmailAndPassword(email, password);
+    }
+}
+
+export const firestore = new FirestoreAccess();
+export const auth = new AuthAccess();
