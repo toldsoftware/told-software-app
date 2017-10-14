@@ -25,7 +25,11 @@ class FakeImage {
     }
 
     load = async (url: string) => {
-        await fetch(url);
+        // Handle an empty url or random errors
+        try {
+            await fetch(url);
+        } catch (err) { }
+
         this._callbacks.forEach(x => x());
         this._isLoaded = true;
     };
@@ -41,7 +45,7 @@ FakeImage.ensureImageExists();
 function setup() {
     const app = firebase.initializeApp(C.firebaseConfig);
 
-    firebase.firestore.setLogLevel('debug');
+    // firebase.firestore.setLogLevel('debug');
     const firestore = firebase.firestore(app);
     const auth = firebase.auth(app);
 

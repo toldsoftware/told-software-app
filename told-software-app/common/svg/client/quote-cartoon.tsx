@@ -68,12 +68,12 @@ function adjustPath(d: string, baseWidth: number, baseHeight: number, wScale: nu
     return ',' + v;
   });;
 
-  console.log('adjustPath RESULT',
-    '\nwScale', wScale,
-    '\nhScale', hScale,
-    '\nd', d,
-    '\nf', final,
-  );
+  // console.log('adjustPath RESULT',
+  //   '\nwScale', wScale,
+  //   '\nhScale', hScale,
+  //   '\nd', d,
+  //   '\nf', final,
+  // );
 
   return final;
 }

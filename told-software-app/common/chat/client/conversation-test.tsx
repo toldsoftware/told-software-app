@@ -4,34 +4,35 @@ import * as T from '../types';
 import { ConversationApi } from './conversation-api';
 import { ConversationView } from './conversation-view';
 import { auth } from '../../firebase/client/firebase-api';
+import { SlimObservable } from '../../utils/observable';
 
 const api = new ConversationApi();
-let conversation: T.ChatConversation = null;
-let userAuthor: T.ChatAuthor = null;
 
 export class ConversationTest extends React.Component {
 
     _conversation: T.ChatConversation;
     _userAuthor: T.ChatAuthor;
+    _subscription: SlimObservable<T.ChatConversation>;
 
     componentWillMount() {
         this.load();
     }
 
+    componentWillUnmount() {
+        this.unsubscribe();
+    }
+
     load = async () => {
         console.log('ConversationTest: load START');
 
-        this._conversation = conversation;
-        if (this._conversation) { return; }
-
         console.log('ConversationTest: load: Get Conversation');
-        this._conversation = conversation = await api.getConversation_byName('Test Chat');
+        this._conversation = await api.getConversation_byName('Test Chat');
 
         if (!this._conversation) {
 
             console.log('ConversationTest: load: Does not Exist - Create Conversation');
             await api.createConversation('Test Chat');
-            this._conversation = conversation = await api.getConversation_byName('Test Chat');
+            this._conversation = await api.getConversation_byName('Test Chat');
         }
 
         console.log('ConversationTest: load: Get Current User Id');
@@ -55,7 +56,7 @@ export class ConversationTest extends React.Component {
         let user = auth.currentUser;
 
         if (!user) {
-            this._userAuthor = userAuthor = null;
+            this._userAuthor = null;
             return;
         }
 
@@ -65,15 +66,24 @@ export class ConversationTest extends React.Component {
             'photoURL', user.photoURL
         );
 
-        this._userAuthor = userAuthor = await api.getOrCreateAuthor(user.uid, user.displayName, user.photoURL);
+        this._userAuthor = await api.getOrCreateAuthor(user.uid, user.displayName, user.photoURL);
     };
 
     subscribeToConversation = () => {
-        const s = api.subscribeToConversation(this._conversation);
-        s.subscribe(x => {
+        this.unsubscribe();
+
+        this._subscription = api.subscribeToConversation(this._conversation);
+        this._subscription.subscribe(x => {
             this._conversation = x;
             this.setState({});
         });
+    };
+
+    unsubscribe = () => {
+        if (this._subscription) {
+            this._subscription.unsubscribe();
+            this._subscription = null;
+        }
     };
 
     signOut = async () => {
@@ -119,6 +129,7 @@ export class ConversationTest extends React.Component {
     };
 
     render() {
+        const conversation = this._conversation;
 
         console.log('ConversationTest: render',
             'message.length', this._conversation && this._conversation.messages.length,

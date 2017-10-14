@@ -23,7 +23,7 @@ export class DemoListScreen extends ComponentBase {
 
                 <Button title="Map Demo" onPress={() => navigate('MapDemo')} />
                 {/* <Button title="Push Notification Demo" onPress={() => navigate('PushNotificationDemo')} /> */}
-                <Button title="Firebase Demo" onPress={() => navigate('FirebaseDemo')} />
+                {/* <Button title="Firebase Demo" onPress={() => navigate('FirebaseDemo')} /> */}
             </View>
         );
     }
