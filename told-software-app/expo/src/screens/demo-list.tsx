@@ -2,13 +2,13 @@ import * as React from 'react';
 import { StyleSheet, Text, View, Button } from 'react-native';
 import { MapDemoScreen } from './map-demo';
 import { PushNotificationDemoScreen } from './push-notification-demo';
-import { FirebaseDemoScreen } from './firebase-demo';
+// import { FirebaseDemoScreen } from './firebase-demo';
 import { ComponentBase } from './base';
 
 export const demoScreens = {
     MapDemo: { screen: MapDemoScreen },
     PushNotificationDemo: { screen: MapDemoScreen },
-    FirebaseDemo: { screen: FirebaseDemoScreen },
+    // FirebaseDemo: { screen: FirebaseDemoScreen },
 };
 
 export class DemoListScreen extends ComponentBase {
